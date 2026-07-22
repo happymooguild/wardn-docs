@@ -1,0 +1,58 @@
+/* ============================================================
+   wardn design tokens — extracted 1:1 from the design system
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --bg: #0e1013;
+  --bg-deep: #0b0e12; /* darker banded sections + code blocks */
+  --card: #12161c;
+  --card-2: #0f1319;
+
+  /* Borders */
+  --line: #1b1f26; /* hairline dividers */
+  --line-2: #16191f; /* section band edges */
+  --border: #1f242c;
+  --border-2: #22262e;
+  --border-hover: #34515f;
+
+  /* Text */
+  --text: #e8eaed;
+  --text-bright: #f2f4f6;
+  --text-muted: #9aa1ab;
+  --text-body: #b4bac2;
+  --text-dim: #6b7280;
+  --text-faint: #4b5563;
+  --code: #c9cdd3;
+
+  /* Accent (wardn green) */
+  --accent: #63d397;
+  --accent-2: #5bc98a;
+  --accent-hover: #7ee0ac;
+  --accent-border: #23402f;
+  --accent-bg: #12211a;
+
+  /* Signal colors */
+  --danger: #e0897a;
+  --danger-bg: #2a1815;
+  --danger-border: #43231d;
+  --warn: #e0b27a;
+  --warn-bg: #241b12;
+  --warn-border: #3a2a1d;
+
+  /* Chart */
+  --chart-line: #5b6472;
+  --chart-grid: #1b1f26;
+
+  /* Type */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Layout */
+  --nav-h: 66px;
+  --scroll-offset: 84px;
+}
