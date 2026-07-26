@@ -3,19 +3,19 @@ import Reveal from '../components/Reveal'
 const FEATURES = [
   {
     title: 'Auto-detect deploys',
-    text: 'The moment a new version is live and healthy — raw CI or GitOps, same endpoint.',
+    text: 'The moment a new version is live and healthy - raw CI or GitOps, same endpoint.',
   },
   {
-    title: 'Before / after graphs',
-    text: 'Purpose-built comparison per metric, plus every version plotted on one labeled timeline.',
+    title: 'Per-version dashboards',
+    text: 'Latency, error rate, throughput, CPU and memory, snapshotted before/after every deploy. Build custom ones from any SigNoz metric.',
   },
   {
-    title: 'AI explains why',
-    text: 'When a real regression is found, reason over logs and traces to point at a likely cause.',
+    title: 'AI root-cause',
+    text: 'Compare any two versions; when it regresses, reason over the stored logs and traces to name the cause. Claude, OpenAI, or Gemini.',
   },
   {
     title: 'Flexible alerting',
-    text: 'Slack, custom webhook, email — configurable per metric. More integrations to come.',
+    text: 'Slack, custom webhook, email - configurable per metric. More integrations to come.',
   },
   {
     title: 'Backend-agnostic',
@@ -23,7 +23,7 @@ const FEATURES = [
   },
   {
     title: 'Observes itself',
-    text: 'wardn emits its own OTel traces and logs into the same stack it’s watching.',
+    text: 'wardn emits its own OTel traces and logs into the same stack it watches.',
   },
 ]
 

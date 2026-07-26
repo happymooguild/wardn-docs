@@ -3,7 +3,7 @@ import { useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
 
 /**
  * Subtle magnetic pull toward the cursor. Motion is choreography, not
- * decoration — the pull is small (default 0.25) and springs back on leave.
+ * decoration - the pull is small (default 0.25) and springs back on leave.
  * Fully disabled under prefers-reduced-motion.
  */
 export function useMagnetic(strength = 0.25) {

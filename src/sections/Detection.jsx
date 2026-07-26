@@ -34,7 +34,7 @@ export default function Detection() {
       </Reveal>
       <Reveal as="p" className="detect-lead" delay={0.08}>
         The single source of truth for "a deploy happened" is one call. wardn
-        doesn't care who makes it — only that the caller can vouch the version is
+        doesn't care who makes it - only that the caller can vouch the version is
         live and healthy. It infers the previous version itself.
       </Reveal>
 
@@ -46,7 +46,7 @@ export default function Detection() {
           </div>
           <pre className="code-block">{PAYLOAD}</pre>
           <p className="detect-note">
-            <span className="hl">previous_version</span> is never sent — wardn
+            <span className="hl">previous_version</span> is never sent - wardn
             reads the last marker for that app. Smaller payload, no logic to
             duplicate per caller.
           </p>
@@ -98,7 +98,7 @@ export default function Detection() {
               ) : (
                 <>
                   <p>
-                    CI's job ends at the commit — ArgoCD sees the real rollout. So
+                    CI's job ends at the commit - ArgoCD sees the real rollout. So
                     ArgoCD's Notifications controller is the caller. Config, not
                     code.
                   </p>

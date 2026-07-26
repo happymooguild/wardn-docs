@@ -7,7 +7,6 @@ import Detection from '../sections/Detection'
 import Dashboard from '../sections/Dashboard'
 import Features from '../sections/Features'
 import Architecture from '../sections/Architecture'
-import Rollback from '../sections/Rollback'
 import CTA from '../sections/CTA'
 import Footer from '../components/Footer'
 import { scrollToId } from '../lib/scroll'
@@ -39,7 +38,6 @@ export default function Home() {
       <Dashboard />
       <Features />
       <Architecture />
-      <Rollback />
       <CTA />
       <Footer />
     </motion.main>

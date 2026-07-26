@@ -11,7 +11,7 @@ const FACTS = [
   { k: 'No cluster access', v: 'it only reads, never touches' },
 ]
 
-// Staggered entrance for the hero copy — each line lifts in just after the
+// Staggered entrance for the hero copy - each line lifts in just after the
 // one above it, so the headline reads as a deliberate reveal, not a dump.
 const container = {
   hidden: {},
@@ -38,7 +38,7 @@ export default function Hero() {
           </motion.h1>
           <motion.p className="hero-sub" variants={item}>
             Alerts fire when things are already broken. wardn catches the quiet
-            regression — 10ms slower, 1% more errors — by comparing every version
+            regression - 10ms slower, 1% more errors - by comparing every version
             against the one before it, automatically.
           </motion.p>
           <motion.div className="hero-actions" variants={item}>

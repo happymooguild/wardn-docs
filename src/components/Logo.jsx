@@ -1,5 +1,5 @@
 // The wardn mark: a "W" traced as a zig-zag polyline with a dot on the last
-// peak — a chart line that ticks up. `on` recolors the stroke (e.g. on a
+// peak - a chart line that ticks up. `on` recolors the stroke (e.g. on a
 // filled green chip the mark is drawn in the background color).
 export default function Logo({ size = 30, color = '#5BC98A', className, style }) {
   const h = (size / 76) * 60

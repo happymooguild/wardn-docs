@@ -22,7 +22,7 @@ export default function Gap() {
           <div className="gap-num">02</div>
           <div className="gap-title">Someone happens to be watching.</div>
           <div className="gap-text">
-            A dashboard at the right moment, luck, and a good eye — not a system.
+            A dashboard at the right moment, luck, and a good eye - not a system.
           </div>
         </Reveal>
       </div>
@@ -34,10 +34,10 @@ export default function Gap() {
         <div>
           <div className="callout-title">Alerts don't close this gap.</div>
           <div className="callout-text">
-            They're built to catch what's already broken — p99 above 2s, error
+            They're built to catch what's already broken - p99 above 2s, error
             rate above 5%. Nothing fires when a version is quietly 10ms slower or
             1% flakier. Nothing is <em>wrong</em> yet by the threshold's
-            definition — but your customers already have a worse experience than
+            definition - but your customers already have a worse experience than
             an hour ago.
           </div>
         </div>

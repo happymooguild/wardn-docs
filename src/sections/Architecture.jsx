@@ -85,7 +85,7 @@ export default function Architecture() {
           </div>
 
           <div className="pill arch-note">
-            wardn never has direct cluster access — it only reads.
+            wardn never has direct cluster access - it only reads.
           </div>
         </Reveal>
       </div>

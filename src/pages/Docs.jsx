@@ -14,7 +14,6 @@ const NAV = [
   ['doc-ai', 'AI reasoning'],
   ['doc-auth', 'Auth & RBAC'],
   ['doc-data', 'Data model'],
-  ['doc-rollback', 'Rollback'],
 ]
 
 const MARKER_PAYLOAD = `Authorization: Bearer <per-app API key>
@@ -34,9 +33,11 @@ const GO_INTERFACE = `type MetricsProvider interface {
 const DATA_MODEL = [
   ['deploy_events', 'One row per marker: app, version, previous_version, source'],
   ['metric_snapshots', 'Before/after query results per event (JSONB)'],
+  ['deploy_telemetry', 'Before/after error logs and traces per deploy (JSONB), fed to the AI'],
+  ['dashboards', 'Built-in and custom per-version dashboards (metric to SigNoz series)'],
   ['analyses', 'LLM prompt + response per regression'],
   ['metric_definitions', 'Admin-managed PromQL query templates, per backend'],
-  ['users · roles', 'Auth and RBAC (admin / member)'],
+  ['users, roles', 'Auth and RBAC (admin / member)'],
 ]
 
 export default function Docs() {
@@ -103,11 +104,11 @@ export default function Docs() {
             wardn answers one question every alerting stack leaves open:{' '}
             <span style={{ color: 'var(--text)' }}>did this deploy make things worse?</span> It
             detects when a new version goes live, compares the metrics that matter from
-            immediately before and after, and — if a real regression appears — can explain why.
+            immediately before and after, and - if a real regression appears - can explain why.
           </p>
           <p style={{ color: 'var(--text-muted)' }}>
             It works regardless of how you deploy, doesn't require cluster access, and treats the
-            metrics backend as the source of truth — storing only sparse before/after snapshots
+            metrics backend as the source of truth - storing only sparse before/after snapshots
             itself.
           </p>
         </div>
@@ -116,7 +117,7 @@ export default function Docs() {
           <h2>Quickstart</h2>
           <ol>
             <li>
-              An admin registers your app in the dashboard — this generates an API key, shown
+              An admin registers your app in the dashboard - this generates an API key, shown
               once, bound to that app + environment.
             </li>
             <li>
@@ -130,7 +131,7 @@ export default function Docs() {
               </span>{' '}
               the moment a version is confirmed healthy.
             </li>
-            <li>Open the dashboard — before/after graphs appear from the second deploy onward.</li>
+            <li>Open the dashboard - before/after graphs appear from the second deploy onward.</li>
           </ol>
         </div>
 
@@ -138,7 +139,7 @@ export default function Docs() {
           <h2>Marker API</h2>
           <p>
             The single source of truth for "a deploy happened." wardn infers{' '}
-            <span className="mono">previous_version</span> from the last recorded marker — the
+            <span className="mono">previous_version</span> from the last recorded marker - the
             caller never sends it.
           </p>
           <div className="code-head">
@@ -148,8 +149,8 @@ export default function Docs() {
           <pre className="code-block">{MARKER_PAYLOAD}</pre>
           <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
             {[
-              ['auth', <>Per-app key, checked <em>and scoped</em> — the key's bound app must match the <span className="mono">app</span> in the body, or 403.</>],
-              ['idem', <>Dedupe on <span className="mono">(app, version, timestamp)</span> — ArgoCD retries won't create duplicate events.</>],
+              ['auth', <>Per-app key, checked <em>and scoped</em> - the key's bound app must match the <span className="mono">app</span> in the body, or 403.</>],
+              ['idem', <>Dedupe on <span className="mono">(app, version, timestamp)</span> - ArgoCD retries won't create duplicate events.</>],
               ['valid', <>Malformed payloads fail loud with a 4xx; caller timestamps are sanity-checked against server time.</>],
             ].map(([k, v]) => (
               <div key={k} style={{ display: 'flex', gap: 12 }}>
@@ -171,7 +172,7 @@ export default function Docs() {
           </p>
           <p>
             <span style={{ color: 'var(--text)', fontWeight: 600 }}>GitOps.</span> CI's job ends at
-            the commit — ArgoCD sees the rollout. Its Notifications controller becomes the caller
+            the commit - ArgoCD sees the rollout. Its Notifications controller becomes the caller
             via a <span className="mono" style={{ color: 'var(--accent)' }}>ConfigMap</span>. Flux
             follows the same pattern via its notification-controller.
           </p>
@@ -195,17 +196,25 @@ export default function Docs() {
           </pre>
           <p style={{ color: 'var(--text-dim)', fontSize: 14, marginTop: 14 }}>
             Assumption to verify before building on it: confirm SigNoz's query API is genuinely
-            PromQL-compatible — don't assume, check.
+            PromQL-compatible - don't assume, check.
           </p>
         </div>
 
         <div id="doc-ai">
           <h2>AI reasoning</h2>
+          <p>
+            Root-cause runs when a before/after diff crosses a configured threshold (opt-in per app),
+            and on demand from <span style={{ color: 'var(--text)' }}>Ask AI</span>. The error logs and
+            slow/failed traces for the version's window are captured to Postgres at analysis time, so
+            the model reasons over stored evidence rather than a live query that may run past retention.
+            Given the metrics plus that evidence, it names a likely cause and quotes the log lines or
+            span names that support it.
+          </p>
           <p style={{ marginBottom: 0 }}>
-            Triggered only when the before/after diff crosses a configured threshold — not on every
-            deploy, to keep calls cheap and relevant. Given the metrics, logs, and traces for the
-            same windows, the model points at a likely cause rather than restating the delta. Scoped
-            to SigNoz-sourced logs and traces for now, and opt-in per app.
+            <span style={{ color: 'var(--text)' }}>Ask AI</span> also compares any two versions across
+            every metric (latency, error rate, throughput, CPU, memory) and, when it flags a
+            regression, digs into the logs and traces for the cause. Providers are pluggable: Anthropic
+            (Claude), OpenAI, or Gemini, each with its own model picker.
           </p>
         </div>
 
@@ -240,7 +249,7 @@ export default function Docs() {
         <div id="doc-data">
           <h2>Data model</h2>
           <p>
-            Postgres — not SQLite (outgrown once auth + RBAC entered scope) and not ClickHouse
+            Postgres - not SQLite (outgrown once auth + RBAC entered scope) and not ClickHouse
             (wardn stores sparse snapshots, not raw time series).
           </p>
           <div className="dm-table">
@@ -253,24 +262,6 @@ export default function Docs() {
           </div>
         </div>
 
-        <div id="doc-rollback">
-          <h2>
-            Rollback <span className="tag-todo">TODO</span>
-          </h2>
-          <p>
-            Not yet designed — deliberately. One thing is settled:{' '}
-            <span style={{ color: 'var(--text)' }}>wardn will never have direct cluster access</span>,
-            however this ends up working.
-          </p>
-          <p style={{ color: 'var(--text-muted)', fontSize: 15.5, marginBottom: 0 }}>
-            Ruled out so far: assuming every team has a CI rollback job (not universal), and plain{' '}
-            <span className="mono">git revert</span> for GitOps (breaks on later commits, still
-            needs a merged PR). Directions worth exploring: redeploy-forward with{' '}
-            <span className="mono">previous_version</span>, direct image-tag overwrite, and possibly
-            two honest tiers — fully-auto where an auto-merge path exists, PR-with-a-ping where it
-            doesn't. Comes back for its own discussion before anyone builds it.
-          </p>
-        </div>
       </div>
     </motion.main>
   )

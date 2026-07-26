@@ -54,7 +54,7 @@ export default function Dashboard() {
           }}
         >
           Before/after graphs for each tracked metric, plus every recorded
-          version on one timeline — each point labeled, the regression obvious at
+          version on one timeline - each point labeled, the regression obvious at
           a glance.
         </Reveal>
 
@@ -96,7 +96,7 @@ export default function Dashboard() {
               concentrated in the p99 tail.
             </p>
             <div className="ai-foot">
-              Runs only when the delta crosses your threshold — reasoning over logs
+              Runs only when the delta crosses your threshold - reasoning over logs
               + traces for the same windows, not a restatement of the number.
             </div>
           </Reveal>

@@ -10,7 +10,7 @@ export default function CopyButton({ text }) {
       setCopied(true)
       setTimeout(() => setCopied(false), 1400)
     } catch {
-      /* clipboard unavailable — no-op */
+      /* clipboard unavailable - no-op */
     }
   }
 
