@@ -18,7 +18,7 @@ const NAV = [
 ]
 
 const HELM_INSTALL = `helm install wardn oci://ghcr.io/happymooguild/charts/wardn \\
-  --version 0.1.0 \\
+  --version 1.0.0 \\
   --namespace wardn --create-namespace \\
   --set signoz.url=http://signoz.signoz.svc.cluster.local:8080 \\
   --set signoz.apiKey='<minted-service-account-key>' \\
