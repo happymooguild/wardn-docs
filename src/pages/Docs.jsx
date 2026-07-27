@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import CopyButton from '../components/CopyButton'
 import { scrollToId } from '../lib/scroll'
-import { GITOPS_YAML } from '../lib/config'
+import { GITOPS_YAML, GITHUB_URL } from '../lib/config'
 
 const NAV = [
   ['doc-overview', 'Overview'],
+  ['doc-install', 'Install'],
   ['doc-quickstart', 'Quickstart'],
   ['doc-marker', 'Marker API'],
   ['doc-deploy', 'Deploy integrations'],
@@ -15,6 +16,18 @@ const NAV = [
   ['doc-auth', 'Auth & RBAC'],
   ['doc-data', 'Data model'],
 ]
+
+const HELM_INSTALL = `helm install wardn oci://ghcr.io/happymooguild/charts/wardn \\
+  --version 0.1.0 \\
+  --namespace wardn --create-namespace \\
+  --set signoz.url=http://signoz.signoz.svc.cluster.local:8080 \\
+  --set signoz.apiKey='<minted-service-account-key>' \\
+  --set auth.adminPassword='<a-strong-password>'`
+
+const COMPOSE = `git clone https://github.com/happymooguild/wardn.git
+cd wardn
+docker compose up --build
+# http://localhost:8088   ·   log in as  admin / admin@12345`
 
 const MARKER_PAYLOAD = `Authorization: Bearer <per-app API key>
 
@@ -111,6 +124,56 @@ export default function Docs() {
             metrics backend as the source of truth - storing only sparse before/after snapshots
             itself.
           </p>
+          <p style={{ fontSize: 14, marginBottom: 0 }}>
+            <a href="https://www.youtube.com/watch?v=ahsQLtxf06I" style={{ color: 'var(--accent)' }}>
+              Watch the demo
+            </a>
+            <span style={{ color: 'var(--text-dim)' }}> · </span>
+            <a href="https://artifacthub.io/packages/helm/wardn/wardn" style={{ color: 'var(--accent)' }}>
+              Artifact Hub
+            </a>
+            <span style={{ color: 'var(--text-dim)' }}> · </span>
+            <a href={GITHUB_URL} style={{ color: 'var(--accent)' }}>
+              GitHub
+            </a>
+          </p>
+        </div>
+
+        <div id="doc-install">
+          <h2>Install</h2>
+          <p>
+            The chart ships as an OCI artifact on GHCR and is listed on{' '}
+            <a href="https://artifacthub.io/packages/helm/wardn/wardn" style={{ color: 'var(--accent)' }}>
+              Artifact Hub
+            </a>
+            . The backend and dashboard images are public, so there's nothing to clone or build -
+            one command provisions the backend, the dashboard, and a persistent Postgres, and
+            generates its own secrets.
+          </p>
+          <div className="code-head">
+            <span className="file">Kubernetes · Helm</span>
+            <CopyButton text={HELM_INSTALL} />
+          </div>
+          <pre className="code-block" style={{ fontSize: 12.5, lineHeight: 1.7 }}>{HELM_INSTALL}</pre>
+          <p style={{ color: 'var(--text-muted)' }}>
+            The default Service is <span className="mono">ClusterIP</span>; port-forward{' '}
+            <span className="mono">svc/wardn-frontend</span> to reach it, or enable the bundled
+            Ingress. SigNoz is optional to start - the marker API and dashboard work without it, and
+            analysis begins once <span className="mono">signoz.url</span> is set.
+          </p>
+          <p style={{ marginTop: 20 }}>Prefer to try it locally? Docker Compose brings up the whole stack:</p>
+          <div className="code-head">
+            <span className="file">Local · Docker Compose</span>
+            <CopyButton text={COMPOSE} />
+          </div>
+          <pre className="code-block" style={{ fontSize: 12.5, lineHeight: 1.7 }}>{COMPOSE}</pre>
+          <p style={{ color: 'var(--text-dim)', fontSize: 14, marginTop: 14 }}>
+            Full walkthrough - Ingress + TLS, external Postgres, upgrades, and troubleshooting - is in{' '}
+            <a href={`${GITHUB_URL}/blob/main/docs/installation.md`} style={{ color: 'var(--accent)' }}>
+              docs/installation.md
+            </a>
+            .
+          </p>
         </div>
 
         <div id="doc-quickstart">
@@ -194,9 +257,13 @@ export default function Docs() {
           <pre className="code-block" style={{ borderRadius: 12, lineHeight: 1.7 }}>
             {GO_INTERFACE}
           </pre>
-          <p style={{ color: 'var(--text-dim)', fontSize: 14, marginTop: 14 }}>
-            Assumption to verify before building on it: confirm SigNoz's query API is genuinely
-            PromQL-compatible - don't assume, check.
+          <p style={{ color: 'var(--text-muted)', marginTop: 14 }}>
+            Verified against SigNoz: metrics come from PromQL over{' '}
+            <span className="mono">/api/v5/query_range</span>, logs and traces from the raw builder
+            query, and the metric list that backs custom dashboards from{' '}
+            <span className="mono">/api/v2/metrics</span>. Out of the box wardn compares five metrics
+            per version - latency, error rate, throughput, CPU, and memory - and any metric SigNoz
+            scrapes can drive a custom dashboard.
           </p>
         </div>
 
